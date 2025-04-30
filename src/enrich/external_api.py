@@ -1,5 +1,7 @@
+import random
+import time
 from typing import Dict
-import random, time
+
 
 def enrich_selected(entities: Dict) -> Dict:
     """Call external APIs for subset of entities (stub)."""

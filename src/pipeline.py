@@ -1,14 +1,15 @@
-from src.transform.clean import clean
+from src.config import get_settings
+from src.enrich.external_api import enrich_selected
 from src.extract import extract_entities
-from src.validate.match import compare
+from src.ingest.models import Document
 from src.store.bigquery import save_to_bq
 from src.store.dvs_client import enqueue_verification
-from src.enrich.external_api import enrich_selected
-from src.config import get_settings
+from src.transform.clean import clean
+from src.validate.match import compare
 from src.worker.human_review import enqueue_for_human_review, flag_fraud
-from src.ingest.models import Document
 
 settings = get_settings()
+
 
 def process_document(doc: Document) -> None:
     cleaned_uri = clean(doc)

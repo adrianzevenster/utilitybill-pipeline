@@ -1,5 +1,5 @@
-from typing import Tuple, Dict
-from random import uniform
+from typing import Dict, Tuple
+
 
 def compare(entities: Dict) -> Tuple[bool, float]:
     """Return verdict and confidence score (dummy for now)."""

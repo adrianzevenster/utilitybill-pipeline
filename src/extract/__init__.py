@@ -1,8 +1,10 @@
 from typing import Dict, List
+
 from .docai_client import extract_with_docai
 from .gemini_client import extract_with_gemini
 from .ocr import local_ocr
 from .utils import vote_and_merge
+
 
 def extract_entities(gcs_uri: str) -> Dict:
     candidates: List[Dict] = []

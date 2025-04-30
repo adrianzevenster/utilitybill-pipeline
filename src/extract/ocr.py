@@ -1,5 +1,6 @@
-from typing import Dict
 import random
+from typing import Dict
+
 
 def local_ocr(gcs_uri: str) -> Dict:
     """Stub local OCR layer."""

@@ -1,5 +1,7 @@
+import json
+import time
 from typing import Dict
-import json, time, random
+
 
 def enqueue_verification(payload: Dict) -> None:
     """Simulate publishing to DVS verification request queue."""

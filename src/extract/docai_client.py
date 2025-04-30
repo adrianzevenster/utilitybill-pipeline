@@ -1,5 +1,6 @@
-from typing import Dict
 import random
+from typing import Dict
+
 
 def extract_with_docai(gcs_uri: str) -> Dict:
     """Stub: replace with real Document AI call."""

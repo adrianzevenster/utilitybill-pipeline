@@ -1,5 +1,7 @@
+import random
+import time
 from typing import Dict
-import random, time
+
 
 def extract_with_gemini(gcs_uri: str) -> Dict:
     """Stub: pretend to call Gemini Vision."""
@@ -8,5 +10,8 @@ def extract_with_gemini(gcs_uri: str) -> Dict:
         raise TimeoutError("Gemini timeout")
     return {
         "name": {"value": "Jane Doe", "confidence": random.uniform(0.85, 0.95)},
-        "addressline1": {"value": "123 Main St", "confidence": random.uniform(0.85, 0.95)},
+        "addressline1": {
+            "value": "123 Main St",
+            "confidence": random.uniform(0.85, 0.95),
+        },
     }
