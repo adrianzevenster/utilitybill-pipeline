@@ -2,7 +2,7 @@ from typing import Any, Dict, List
 
 
 def vote_and_merge(
-    candidates: List[Dict[str, Dict[str, Any]]]
+    candidates: List[Dict[str, Dict[str, Any]]],
 ) -> Dict[str, Dict[str, Any]]:
     """Majority vote on key-value pairs by confidence."""
     result: Dict[str, Dict[str, Any]] = {}

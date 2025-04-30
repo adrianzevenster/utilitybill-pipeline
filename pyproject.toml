@@ -1,3 +1,8 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
 [project]
 name = "utilitybill-pipeline"
 version = "0.1.0"
@@ -14,6 +19,7 @@ dependencies = [
   "celery[redis]",
   "python-multipart",
   "tqdm",
+  "pydantic-settings>=2.0",
 ]
 
 [tool.black]
@@ -26,3 +32,11 @@ profile = "black"
 [tool.flake8]
 max-line-length = 88
 extend-ignore = ["E203","W503"]
+
+[tool.setuptools]
+packages = ["src"]
+package-dir = {"" = "."}
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-httpx", "prometheus-client"]
+

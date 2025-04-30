@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: utilitybill-pipeline
+Version: 0.1.0
+Requires-Python: >=3.10
+Requires-Dist: google-cloud-documentai
+Requires-Dist: google-cloud-storage
+Requires-Dist: google-cloud-bigquery
+Requires-Dist: google-cloud-pubsub
+Requires-Dist: google-generativeai
+Requires-Dist: pydantic>=2
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: celery[redis]
+Requires-Dist: python-multipart
+Requires-Dist: tqdm

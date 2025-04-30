@@ -1,0 +1,11 @@
+google-cloud-documentai
+google-cloud-storage
+google-cloud-bigquery
+google-cloud-pubsub
+google-generativeai
+pydantic>=2
+fastapi
+uvicorn[standard]
+celery[redis]
+python-multipart
+tqdm
