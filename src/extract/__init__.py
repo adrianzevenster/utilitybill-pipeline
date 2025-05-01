@@ -1,47 +1,46 @@
 # src/extract/__init__.py
-"""
-Expose exactly one public function: `extract_entities(uri_or_path)`,
-which returns ONLY the entities produced by our custom extractor.
-
-Google Document AI, Gemini, and Tesseract stubs are no longer used.
-"""
-
 from __future__ import annotations
 
 from pathlib import Path, PurePosixPath
 from typing import Dict
 
-from .custom import extract_custom
-
+from src.extract.custom import extract_custom
+from src.ingest.models import Document  # NEW
+from src.extract.ocr import local_ocr   # keep or swap for Vision API
 
 def _download_gcs_to_tmp(gcs_uri: str) -> str:
-    """Download a gs:// object to /tmp and return the local path."""
     from google.cloud import storage
+    bucket, blob = gcs_uri[5:].split("/", 1)
+    tmp = Path("/tmp") / Path(PurePosixPath(blob).name)
+    storage.Client().bucket(bucket).blob(blob).download_to_filename(tmp)
+    return str(tmp)
 
-    bucket_name, blob_name = gcs_uri[5:].split("/", 1)
-    tmp_path = Path("/tmp") / Path(PurePosixPath(blob_name).name)
-    storage.Client().bucket(bucket_name).blob(blob_name).download_to_filename(tmp_path)
-    return str(tmp_path)
+def _ensure_local(uri: str) -> str:
+    if uri.startswith("file://"):
+        return uri[7:]
+    if uri.startswith("gs://"):
+        return _download_gcs_to_tmp(uri)
+    return uri  # already a local path
 
-
-def extract_entities(uri_or_path: str) -> Dict:
+# ---------- public entry point ---------- #
+def extract_entities(doc: Document, cleaned_uri: str) -> Dict:
     """
+    Route to the correct extractor based on MIME type.
+
     Parameters
     ----------
-    uri_or_path : str
-        • 'file://<abs-path>'   — produced by offline loader
-        • '<local-path>'        — direct path on disk
-        • 'gs://bucket/obj'     — downloaded on the fly
+    doc          : Document  (has mime_type)
+    cleaned_uri  : file://… or gs://…  returned by transform.clean()
 
     Returns
     -------
-    Dict[str, Dict]  like {'name': {'value': 'Alice', 'confidence': 0.91}, ...}
+    Dict[str, Dict]  e.g. {'name': {'value': 'Alice', 'confidence': 0.9}}
     """
-    if uri_or_path.startswith("file://"):
-        local_path = uri_or_path[len("file://") :]
-    elif uri_or_path.startswith("gs://"):
-        local_path = _download_gcs_to_tmp(uri_or_path)
-    else:  # assume already a filesystem path
-        local_path = uri_or_path
+    local_path = _ensure_local(cleaned_uri)
 
+    if doc.mime_type.startswith("image/"):
+        # PRIMARY path for images
+        return local_ocr(local_path)
+
+    # default: PDF or other → custom spaCy+regex
     return extract_custom(local_path)
