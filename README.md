@@ -24,6 +24,7 @@ Kubernetes-ready • Prometheus metrics • CI-friendly offline mode.
 ```bash
 git clone <repo> && cd utilitybill-pipeline
 python -m venv .venv && source .venv/bin/activate
+gcloud auth application-default login
 pip install -e .            # editable install
 pip install spacy pdfplumber pytesseract
 python -m spacy download en_core_web_sm
