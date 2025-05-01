@@ -27,7 +27,7 @@ def test_metrics_endpoint_exposes_default_counters():
 
 def test_pipeline_updates_custom_metrics(monkeypatch):
     monkeypatch.setattr(
-        "src.extract.extract_entities",
+        "src.pipeline.extract_entities",
         lambda *_: {"name": {"value": "x", "confidence": 0.96}},
     )
     # patch the alias imported in src.pipeline

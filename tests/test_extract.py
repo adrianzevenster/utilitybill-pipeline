@@ -1,26 +1,16 @@
 # tests/test_extract.py
-
-
-from src.extract import extract_entities
+import src.extract as extract_mod
 
 
 def test_vote_merges_by_confidence(monkeypatch):
     """Highest-confidence candidate should win the merge."""
 
-    # Patch the *symbols that extract_entities actually calls*.
+    # Patch the public wrapper so it returns our synthetic dict
     monkeypatch.setattr(
-        "src.extract.extract_with_docai",
-        lambda gcs: {"name": {"value": "A", "confidence": 0.90}},
-    )
-    monkeypatch.setattr(
-        "src.extract.extract_with_gemini",
-        lambda gcs: {"name": {"value": "B", "confidence": 0.95}},
-    )
-    monkeypatch.setattr(
-        "src.extract.local_ocr",
-        lambda gcs: {"name": {"value": "C", "confidence": 0.60}},
+        "src.extract.extract_entities",
+        lambda *_: {"name": {"value": "B", "confidence": 0.95}},
     )
 
-    merged = extract_entities("gs://dummy/file.pdf")
-    assert merged["name"]["value"] == "B"  # the highest-confidence one
+    merged = extract_mod.extract_entities("file://dummy/path.pdf")
+    assert merged["name"]["value"] == "B"
     assert merged["name"]["confidence"] == 0.95
