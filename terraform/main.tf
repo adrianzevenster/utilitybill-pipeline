@@ -17,5 +17,5 @@ resource "google_project_iam_binding" "project_roles" {
   project  = var.project_id
   role     = each.key
 
-  members  = vars.members
+  members  = var.members
 }
