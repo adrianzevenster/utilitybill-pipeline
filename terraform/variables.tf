@@ -1,12 +1,12 @@
 variable "project_id" {
-  description = "GCP project ID"
+  description = "adg-delivery-moniepoint"
   type        = string
 }
 
 variable "region" {
-  description = "GCP region"
+  description = "eu"
   type        = string
-  default     = "region-naam"
+  default     = "eu"
 }
 
 variable "members" {
